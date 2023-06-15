@@ -75,4 +75,38 @@
                 2. messages -> text 改為變數 user_text (後續請依照自己的需求去修改)
                 3. Authorization 需要將 channel 的 token 填入 (token 請到 LINE Developer Messaging API -> Channel access token 進行建立)
               - 修改完後再次 Publish，並發送訊息給機器人，即可得到回覆。
-5. 未完待續...
+
+5. Library -> Function 範例說明
+   - Add Function取名為getGas
+   - 在Function Stack 新增指令
+   - External API Request
+   1. Inputs內容如下
+      - TEXT:https://gas.goodlife.tw/gas.json?version=2
+      - ENUM:GET
+      - ANY:{}
+      - TEXT[]:[]
+      - INTEGER:10
+      - BOOL:true
+   2. Output內容如下      
+      - AS:api_1
+            
+   - External API Request結束後可以Run & Debug進行測試
+   - 回傳的資料基本上都在response內
+   
+   - Data Manipulation -> Create Variable 
+   - 接下來我們將需要的資訊儲存在Variable內
+   1. Inputs內容如下
+      - VARIABLE NAME:gas_price
+      - VALUE:api_1.response.result.gas_price
+      
+   - Data Manipulation -> Conditional
+   1. 建立if判斷功能
+      - 條件內容：gas_price >= 0
+      - 建立Variable命名為gas_price_text
+      - VALUE部分設為text並輸入：下週油價預計上漲 %s 元
+      - 透過ADD FILTER新增sprintf並將gas_price當做參數
+   2. 功能說明：這邊主要是透過if去判斷gas_price（油價波動）如果大於0表示下週油價將漲價，反之。
+   
+   - Response
+   - 最後將建立的參數gas_price_text當做這個Function的AS（Return的值）就完成了
+
